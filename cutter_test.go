@@ -21,7 +21,7 @@ func TestCrop(t *testing.T) {
 		t.Error("Bad width should be 512 but is", r.Bounds().Dx())
 	}
 	if r.Bounds().Dy() != 400 {
-		t.Error("Bad width should be 400 but is", r.Bounds().Dy())
+		t.Error("Bad height should be 400 but is", r.Bounds().Dy())
 	}
 	if r.Bounds().Min.X != 0 {
 		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
@@ -47,7 +47,33 @@ func TestCrop_Centered(t *testing.T) {
 		t.Error("Bad width should be 512 but is", r.Bounds().Dx())
 	}
 	if r.Bounds().Dy() != 400 {
-		t.Error("Bad width should be 512 but is", r.Bounds().Dy())
+		t.Error("Bad height should be 400 but is", r.Bounds().Dy())
+	}
+	if r.Bounds().Min.X != 544 {
+		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
+	}
+	if r.Bounds().Min.Y != 518 {
+		t.Error("Invalid Bounds Min Y", r.Bounds().Min.Y)
+	}
+}
+
+func TestCrop_Centered_OddDimensions(t *testing.T) {
+	img := getImage()
+
+	c := Config{
+		Width:  513,
+		Height: 401,
+		Mode:   Centered,
+	}
+	r, err := Crop(img, c)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if r.Bounds().Dx() != 513 {
+		t.Error("Bad width should be 513 but is", r.Bounds().Dx())
+	}
+	if r.Bounds().Dy() != 401 {
+		t.Error("Bad height should be 401 but is", r.Bounds().Dy())
 	}
 	if r.Bounds().Min.X != 544 {
 		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
@@ -100,7 +126,7 @@ func TestCutter_Crop_TooBigArea(t *testing.T) {
 		t.Error("Bad width should be 1500 but is", r.Bounds().Dx())
 	}
 	if r.Bounds().Dy() != 1337 {
-		t.Error("Bad width should be 1337 but is", r.Bounds().Dy())
+		t.Error("Bad height should be 1337 but is", r.Bounds().Dy())
 	}
 	if r.Bounds().Min.X != 100 {
 		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
@@ -127,7 +153,7 @@ func TestCrop_TooBigAreaFromCenter(t *testing.T) {
 		t.Error("Bad width should be 900 but is", r.Bounds().Dx())
 	}
 	if r.Bounds().Dy() != 1100 {
-		t.Error("Bad width should be 1100 but is", r.Bounds().Dy(), r.Bounds())
+		t.Error("Bad height should be 1100 but is", r.Bounds().Dy(), r.Bounds())
 	}
 	if r.Bounds().Min.X != 700 {
 		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
@@ -239,7 +265,7 @@ func TestCropForceCopy(t *testing.T) {
 		t.Error("Bad width should be 512 but is", r.Bounds().Dx())
 	}
 	if r.Bounds().Dy() != 400 {
-		t.Error("Bad width should be 400 but is", r.Bounds().Dy())
+		t.Error("Bad height should be 400 but is", r.Bounds().Dy())
 	}
 	if r.Bounds().Min.X != 0 {
 		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)

@@ -55,6 +55,7 @@ package cutter
 import (
 	"image"
 	"image/draw"
+	"math"
 )
 
 // Config is used to defined
@@ -159,7 +160,13 @@ func (c Config) computedCropArea(bounds image.Rectangle, size image.Point) (r im
 	switch c.Mode {
 	case Centered:
 		rMin := c.centeredMin(bounds)
-		r = image.Rect(rMin.X-size.X/2, rMin.Y-size.Y/2, rMin.X+size.X/2, rMin.Y+size.Y/2)
+
+		x0 := int(math.Ceil(float64(rMin.X) - float64(size.X)/2))
+		y0 := int(math.Ceil(float64(rMin.Y) - float64(size.Y)/2))
+		x1 := int(math.Ceil(float64(rMin.X) + float64(size.X)/2))
+		y1 := int(math.Ceil(float64(rMin.Y) + float64(size.Y)/2))
+
+		r = image.Rect(x0, y0, x1, y1)
 	default: // TopLeft
 		rMin := image.Point{min.X + c.Anchor.X, min.Y + c.Anchor.Y}
 		r = image.Rect(rMin.X, rMin.Y, rMin.X+size.X, rMin.Y+size.Y)
