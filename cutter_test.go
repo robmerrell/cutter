@@ -60,26 +60,29 @@ func TestCrop_Centered(t *testing.T) {
 func TestCrop_Centered_OddDimensions(t *testing.T) {
 	img := getImage()
 
-	c := Config{
-		Width:  513,
-		Height: 401,
-		Mode:   Centered,
-	}
-	r, err := Crop(img, c)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if r.Bounds().Dx() != 513 {
-		t.Error("Bad width should be 513 but is", r.Bounds().Dx())
-	}
-	if r.Bounds().Dy() != 401 {
-		t.Error("Bad height should be 401 but is", r.Bounds().Dy())
-	}
-	if r.Bounds().Min.X != 544 {
-		t.Error("Invalid Bounds Min X", r.Bounds().Min.X)
-	}
-	if r.Bounds().Min.Y != 518 {
-		t.Error("Invalid Bounds Min Y", r.Bounds().Min.Y)
+	startWidth := 1100
+	startHeight := 200
+
+	// try testing this with a variety of odd dimensions
+	for i := 1; i < 1001; i += 2 {
+		width := startWidth - i
+		height := startHeight + i
+
+		c := Config{
+			Width:  width,
+			Height: height,
+			Mode:   Centered,
+		}
+		r, err := Crop(img, c)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if r.Bounds().Dx() != width {
+			t.Errorf("Bad width should be %d but is %d\n", width, r.Bounds().Dx())
+		}
+		if r.Bounds().Dy() != height {
+			t.Errorf("Bad height should be %d but is %d\n", height, r.Bounds().Dy())
+		}
 	}
 }
 
